@@ -102,11 +102,21 @@ class SitemapIndex implements PersistingInterface
 
         for ($i = $offsetStart; $i < count($this->items) && $i < $limit; $i ++) {
             $item = $this->items[ $i ];
-            $writer->startElement('sitemap');
-            $writer->writeElement('loc', $item['url']);
-            $writer->writeElement('lastmod',
-                $item['modified']->format(ModifiableInterface::MODIFIED_DATE_FORMAT));
-            $writer->endElement();
+
+            if (count($item['files']) > 1) {
+                foreach ($item['files'] as $file) {
+                    $writer->startElement('sitemap');
+                    $writer->writeElement('loc', dirname($item['url']) . '/' . basename($file));
+                    $writer->writeElement('lastmod', $item['modified']->format(ModifiableInterface::MODIFIED_DATE_FORMAT));
+                    $writer->endElement();
+                }
+            } else {
+                $writer->startElement('sitemap');
+                $writer->writeElement('loc', $item['url']);
+                $writer->writeElement('lastmod',
+                    $item['modified']->format(ModifiableInterface::MODIFIED_DATE_FORMAT));
+                $writer->endElement();
+            }
         }
 
         $writer->endElement();
