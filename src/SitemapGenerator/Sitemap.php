@@ -35,7 +35,7 @@ class Sitemap implements SitemapInterface
         for ($i = 0; $i < $cnt; $i ++) {
             $writtenFiles[] = $this->saveToFile($fileToSave,
                 ($i * self::ITEM_PER_SITEMAP),
-                self::ITEM_PER_SITEMAP,
+                ($i * self::ITEM_PER_SITEMAP) + self::ITEM_PER_SITEMAP,
                 (!$i ? null : $i));
         }
 
@@ -74,10 +74,13 @@ class Sitemap implements SitemapInterface
         $writer->startElement('urlset');
         $writer->writeAttribute('xmlns', self::SCHEMA);
 
+        $p = 0;
         /* @var $item SitemapItemInterface */
         for ($i = $offsetStart; $i < count($this->items) && $i < $limit; $i ++) {
             $item = $this->items[ $i ];
-            
+
+            $p++;
+
             $writer->startElement('url');
             $writer->writeElement('loc', $item->getLocation());
             if (!is_null($priority = $item->getPriority())) {
@@ -95,6 +98,7 @@ class Sitemap implements SitemapInterface
 
         $writer->endElement();
         $writer->endDocument();
+        $writer->flush();
 
         return $filePath;
     }
