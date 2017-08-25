@@ -61,7 +61,7 @@ class SitemapIndex implements PersistingInterface
         for ($i = 0; $i < $cnt; $i ++) {
             $writtenFiles[] = $this->saveToFile($fileToSave,
                 ($i * self::ITEM_PER_SITEMAP_INDEX),
-                self::ITEM_PER_SITEMAP_INDEX,
+                ($i * self::ITEM_PER_SITEMAP_INDEX) + self::ITEM_PER_SITEMAP_INDEX,
                 (!$i ? null : $i));
         }
 
