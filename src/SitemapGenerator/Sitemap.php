@@ -93,6 +93,15 @@ class Sitemap implements SitemapInterface
             if (!is_null($lastmod = $item->getLastModified())) {
                 $writer->writeElement('lastmod', $lastmod);
             }
+
+            foreach ($item->getAlternateTranslations() as $alternateTranslation) {
+                $writer->startElement('xhtml:link');
+                    $writer->writeAttribute('rel', 'alternate');
+                    $writer->writeAttribute('hreflang', $alternateTranslation['language']);
+                    $writer->writeAttribute('href', $alternateTranslation['href']);
+                $writer->endElement();
+            }
+
             $writer->endElement();
         }
 

@@ -29,19 +29,25 @@ class SitemapItem implements SitemapItemInterface
     protected $changeFrequency = null;
 
     /**
-     * Item constructor.
+     * @var array
+     */
+    protected $alternateTranslations = [];
+
+    /**
+     * SitemapItem constructor.
      *
-     * @param string $loc
+     * @param $loc
      * @param string $domain
      * @param float $priority
      * @param null $changeFrequency
      * @param \DateTime|null $lastModified
+     * @param array $alternateTranslations
      */
     public function __construct(
         $loc, $domain = '', $priority = self::DEFAULT_PRIORITY,
-        $changeFrequency = null, \DateTime $lastModified = null
-    )
-    {
+        $changeFrequency = null, \DateTime $lastModified = null,
+        array $alternateTranslations = []
+    ) {
         $this->loc = $loc;
         if (!empty($domain)) {
             $this->loc = $domain . $loc;
@@ -56,7 +62,16 @@ class SitemapItem implements SitemapItemInterface
             $this->lastModified = $lastModified->format(self::MODIFIED_DATE_FORMAT);
         }
 
+        $this->alternateTranslations = $alternateTranslations;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlternateTranslations()
+    {
+        return $this->alternateTranslations;
     }
 
     /**
