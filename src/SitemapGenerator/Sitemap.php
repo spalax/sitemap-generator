@@ -73,6 +73,7 @@ class Sitemap implements SitemapInterface
         $writer->setIndent(true);
         $writer->startElement('urlset');
         $writer->writeAttribute('xmlns', self::SCHEMA);
+        $writer->writeAttribute('xmlns:xhtml', self::SCHEMA_XHTML);
 
         $p = 0;
         /* @var $item SitemapItemInterface */
